@@ -1,0 +1,53 @@
+<html>
+  <head>
+    <title>MathCanvas</title>
+    <style>
+
+      /* HTML */
+      html, body { height: 100%; margin: 0; }
+      .mathc, .mathc .mathc-svg {display:block; width: 100%; height: 100%;}
+
+      /* Global CSS*/
+      .mathc.have-nearest .mathc-svg {
+        cursor: pointer; /* Cursor is Pointer when an element is near */
+      }
+
+
+      /* All .el */
+      .el:hover {cursor: pointer;}
+      .el.selected {
+        fill: #5AA0FF;
+        stroke: #5AA0FF;
+        &:hover, &.nearest {
+          fill: #5AA0FF;
+        }
+      }
+
+      /* Point */
+      .point {
+        fill: #FFF;
+        stroke: #949494;
+      }
+      .point.nearest, .point:hover {
+        stroke: #5AA0FF;
+        stroke-width: 2px;
+      }
+
+    </style>
+    <script type="text/javascript" src="./mathc/mathc.js"></script>
+  </head>
+  <body>
+    <div id="main"></div>
+
+
+    <script type="text/javascript">
+
+      document.addEventListener("DOMContentLoaded", function(event) {
+        let opts = {}
+        let mathc1 = new MathC(document.getElementById('main'), opts)
+
+      });
+
+    </script>
+  </body>
+</html>
