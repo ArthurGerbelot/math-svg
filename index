@@ -1,50 +1,76 @@
 <html>
   <head>
     <title>MathCanvas</title>
+    <link rel="stylesheet" type="text/css" href="./marthy/marthy.css">
+    <script type="text/javascript" src="./marthy/marthy.js"></script>
+
+
     <style>
+    .tools {
+      position: absolute;
+      bottom: 5px;
+      left: 0;
+      right: 0;
+      text-align: center;
+      pointer-events: none;
+    }
 
-      /* HTML */
-      html, body { height: 100%; margin: 0; }
-      .mathc, .mathc .mathc-svg {display:block; width: 100%; height: 100%;}
+    .tools .tool {
+      display: inline-block;
+      width: 48px;
+      height: 48px;
+      margin: 5px;
+      cursor: pointer;
+      pointer-events: all;
+    }
+    .tool.hand { background-image: url('./marthy/img/hand.svg') }
+    .tool.point { background-image: url('./marthy/img/point.svg')  }
+    .tool.segment { background-image: url('./marthy/img/segment.svg')  }
+    .tool.circle { background-image: url('./marthy/img/circle.svg')  }
 
-      /* Global CSS*/
-      .mathc.have-nearest .mathc-svg {
-        cursor: pointer; /* Cursor is Pointer when an element is near */
-      }
-
-
-      /* All .el */
-      .el:hover {cursor: pointer;}
-      .el.selected {
-        fill: #5AA0FF;
-        stroke: #5AA0FF;
-        &:hover, &.nearest {
-          fill: #5AA0FF;
-        }
-      }
-
-      /* Point */
-      .point {
-        fill: #FFF;
-        stroke: #949494;
-      }
-      .point.nearest, .point:hover {
-        stroke: #5AA0FF;
-        stroke-width: 2px;
-      }
-
-    </style>
-    <script type="text/javascript" src="./mathc/mathc.js"></script>
+    .tool:hover {
+      background-position: 0 96px;
+    }
+    .tool.active, .tool.active:hover {
+      background-position: 0 48px;
+      cursor: default;
+    }
+  </style>
   </head>
   <body>
     <div id="main"></div>
+
+    <div id="ui">
+      <div class="tools">
+        <div data-tool="hand" class="tool hand"></div>
+        <div data-tool="point" class="tool point active"></div>
+        <div data-tool="segment" class="tool segment"></div>
+        <div data-tool="circle" class="tool circle"></div>
+      </div>
+    </div>
 
 
     <script type="text/javascript">
 
       document.addEventListener("DOMContentLoaded", function(event) {
         let opts = {}
-        let mathc1 = new MathC(document.getElementById('main'), opts)
+        let marthy = new Marthy(document.getElementById('main'), opts)
+
+        // Handle some code here (To generate personal UI)
+        let tools = Array.prototype.slice.call(document.getElementsByClassName('tool'))
+        tools.forEach(tool => {
+          tool.onclick = function() {
+            if (marthy.setTool(tool.getAttribute('data-tool'))) {
+              // Un-active all
+              let actives = Array.prototype.slice.call(document.getElementsByClassName('tool active'))
+              actives.forEach(active => {
+                active.classList.remove('active')
+              })
+              // Active this
+              this.classList.add('active')
+            }
+          }
+        })
 
       });
 
